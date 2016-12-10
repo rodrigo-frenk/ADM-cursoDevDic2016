@@ -1,0 +1,56 @@
+.w-100 {
+   width: 100%;
+}
+
+.w-20 {
+   width: 20%;
+}
+
+.h-15-v {
+   height: 15vh;
+}
+
+.h-a {
+   height: auto;
+}
+
+
+.p-0-1 {
+   padding: 4px;
+}
+
+
+.text-center {
+   text-align: center;
+}
+
+
+.columns {
+   float: left;
+   display: inline-block;
+   width: 100%;
+   box-sizing: border-box;
+}
+
+.w-20 {
+   width: 20%;
+}
+
+
+h2 {
+   width: 100%;
+   clear: both !important;
+   margin-bottom: 32px;
+}
+
+
+
+
+
+.font-1 { font-family: 'Montserrat', sans-serif; }
+
+.font-2 { font-family: 'Roboto Slab', serif; }
+
+.font-3 { font-family: 'Amatic SC', cursive; }
+
+.font-4 { font-family: 'Bitter', serif; }

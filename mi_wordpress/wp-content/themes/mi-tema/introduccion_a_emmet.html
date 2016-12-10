@@ -1,0 +1,121 @@
+<!-- Introducción al uso de Emmet: -->
+
+<!-- etiqueta -->
+<etiqueta></etiqueta>
+
+
+<!-- etiqueta#identidad -->
+<etiqueta id="identidad"></etiqueta>
+
+
+
+<!-- etiqueta.unaclase.otraclase.unaclasemas -->
+<etiqueta class="unaclase otraclase unaclasemas"></etiqueta>
+
+
+
+<!-- etiqueta#identidad.clase -->
+<etiqueta id="identidad" class="clase"></etiqueta>
+
+
+
+<!-- etiqueta[atributo1=unvalor][atributo2=otrovalor] -->
+<etiqueta atributo1="unvalor" atributo2="otrovalor"></etiqueta>
+
+
+
+
+<!-- h1{Titulo} -->
+<h1>Titulo</h1>
+
+
+<!-- h1{Titulo}+img+p{el texto de un párrafo} -->
+<h1>Titulo</h1>
+<img src="" alt="">
+<p>el texto de un párrafo</p>
+
+
+
+
+<!-- ul>li>a{un texto} -->
+<ul>
+   <li><a href="">un texto</a></li>
+</ul>
+
+
+
+<!-- ul.clasedelista>li.clasedeelemento>a.clasedelink[href=google.com]{Un texto} -->
+<ul class="clasedelista">
+   <li class="clasedeelemento">
+      <a href="google.com" class="clasedelink">
+         Un texto
+      </a>
+   </li>
+</ul>
+
+
+<!-- ul>li{elemento numero $}*5 -->
+<ul>
+   <li>elemento numero 1</li>
+   <li>elemento numero 2</li>
+   <li>elemento numero 3</li>
+   <li>elemento numero 4</li>
+   <li>elemento numero 5</li>
+</ul>
+
+
+
+<!-- ul>(li>a{palabra $})*4 -->
+<ul>
+   <li><a href="">palabra 1</a></li>
+   <li><a href="">palabra 2</a></li>
+   <li><a href="">palabra 3</a></li>
+   <li><a href="">palabra 4</a></li>
+</ul>
+
+
+<!-- Aquí hay un error, el 2o link debería ir fuera del 1o -->
+<!-- a>h1{Título}+a>img -->
+<a href="">
+   <h1>Título</h1>
+   <a href=""><img src="" alt=""></a>
+</a>
+
+<!-- primera solucion: agrupar -->
+<!-- (a>h1{Título})+a>img -->
+<a href="">
+   <h1>Título</h1>
+</a>
+<a href="">
+   <img src="" alt="">
+</a>
+
+
+<!-- segunda solucion: escalar un nivel -->
+<!-- a>h1{Título}^+a>img -->
+<a href="">
+   <h1>Título</h1>
+</a>
+<a href=""><img src="" alt=""></a>
+
+
+
+<!-- generando textos falsos -->
+
+<!-- (p>lorem16)*3 -->
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint qui voluptatem repellat officiis dolorum, sapiente adipisci.</p>
+<p>Error odio dignissimos, est saepe. Eligendi assumenda aliquid aspernatur repudiandae dolorum deserunt, sed vero nam tempora!</p>
+<p>Eveniet totam amet, modi ad, quae minus dicta quaerat! Suscipit, numquam, temporibus. Ullam eius dolores tempora?</p>
+
+
+
+<!-- generando imagenes falsas -->
+
+<!-- img[http://fakeimg.pl/400x300] -->
+<img src="http://fakeimg.pl/400x300" alt="">
+
+<!-- usando colores -->
+<img src="http://fakeimg.pl/400x300/fa00fa/ffaa00" alt="">
+
+<!-- usar texto -->
+<img src="http://fakeimg.pl/400x300/abc/000?text=Un%20texto" alt="">

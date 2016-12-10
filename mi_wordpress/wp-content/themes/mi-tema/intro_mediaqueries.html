@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>Introducción a Media Queries</title>
+
+
+
+   <link rel="stylesheet" href="css/alturas.css">
+
+
+   <style>
+
+
+   @media screen and (min-width:0px) {
+      body {
+         background-color: red;
+      }
+   }
+
+   @media screen and (min-width:768px) {
+      body {
+         background-color: green;
+      }
+   }
+
+   @media screen and (min-width:992px) {
+      body {
+         background-color: blue;
+      }
+   }
+
+   @media screen and (min-width:1200px) {
+      body {
+         background-color: orange;
+      }
+   }
+
+
+   </style>
+
+</head>
+<body>
+
+<div class="contenedor" style="height:100vh">
+
+   <div class="h-xs-80 h-sm-60 h-md-40 h-lg-20" style="background-color: grey; display:block">
+      Caja Dimension Variable
+   </div>
+
+</div>
+
+
+</body>
+</html>

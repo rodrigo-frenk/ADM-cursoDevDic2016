@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>Introducción a Maquetado con Bootstrap</title>
+
+   <link rel="stylesheet" href="recursos/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+   <link rel="stylesheet" href="recursos/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css">
+
+   <link rel="stylesheet" href="recursos/slick-1.6.0/slick/slick.css">
+   <link rel="stylesheet" href="recursos/slick-1.6.0/slick/slick-theme.css">
+
+   <link rel="stylesheet" href="css/alturas.css">
+   <link rel="stylesheet" href="css/ejercicio.css">
+
+</head>
+<body>
+
+   <div id="cajas" class="container-fluid h-100-v">
+
+      <div class="col-xs-6 h-50">
+
+
+         <div class="col-xs-6 h-100">
+            <div class="col-xs-12 h-50">
+               <div class="col-xs-7 h-100"></div>
+               <div class="col-xs-5 h-100">
+                  <div class="h-50"></div>
+                  <div class="h-50"></div>
+               </div>
+            </div>
+
+            <div class="col-xs-12 h-50">
+               <div class="col-xs-6 h-100"></div>
+               <div class="col-xs-6 h-100"></div>
+
+            </div>
+         </div>
+
+         <div class="col-xs-6 h-100">
+            <div class="col-xs-12 h-60"></div>
+            <div class="col-xs-12 h-40">
+               <div class="col-xs-4 h-100"></div>
+               <div class="col-xs-4 h-100"></div>
+               <div class="col-xs-4 h-100">
+                  <div class="h-50"></div>
+                  <div class="h-50"></div>
+               </div>
+            </div>
+         </div>
+
+
+
+      </div>
+      <div class="col-xs-6 h-50">
+
+
+         <div class="col-xs-6 h-100">
+            <div class="col-xs-12 h-50">
+               <div class="col-xs-7 h-100"></div>
+               <div class="col-xs-5 h-100">
+                  <div class="h-50"></div>
+                  <div class="h-50"></div>
+               </div>
+            </div>
+
+            <div class="col-xs-12 h-50">
+               <div class="col-xs-6 h-100"></div>
+               <div class="col-xs-6 h-100"></div>
+
+            </div>
+         </div>
+
+         <div class="col-xs-6 h-100">
+            <div class="col-xs-12 h-60"></div>
+            <div class="col-xs-12 h-40">
+               <div class="col-xs-4 h-100"></div>
+               <div class="col-xs-4 h-100"></div>
+               <div class="col-xs-4 h-100">
+                  <div class="h-50"></div>
+                  <div class="h-50"></div>
+               </div>
+            </div>
+         </div>
+
+
+
+      </div>
+      <div class="col-xs-6 h-50">
+
+
+         <div class="col-xs-6 h-100">
+            <div class="col-xs-12 h-50">
+               <div class="col-xs-7 h-100"></div>
+               <div class="col-xs-5 h-100">
+                  <div class="h-50"></div>
+                  <div class="h-50"></div>
+               </div>
+            </div>
+
+            <div class="col-xs-12 h-50">
+               <div class="col-xs-6 h-100"></div>
+               <div class="col-xs-6 h-100"></div>
+
+            </div>
+         </div>
+
+         <div class="col-xs-6 h-100">
+            <div class="col-xs-12 h-60"></div>
+            <div class="col-xs-12 h-40">
+               <div class="col-xs-4 h-100"></div>
+               <div class="col-xs-4 h-100"></div>
+               <div class="col-xs-4 h-100">
+                  <div class="h-50"></div>
+                  <div class="h-50"></div>
+               </div>
+            </div>
+         </div>
+
+
+
+      </div>
+      <div class="col-xs-6 h-50">
+
+
+         <div class="col-xs-6 h-100">
+            <div class="col-xs-12 h-50">
+               <div class="col-xs-7 h-100"></div>
+               <div class="col-xs-5 h-100">
+                  <div class="h-50"></div>
+                  <div class="h-50"></div>
+               </div>
+            </div>
+
+            <div class="col-xs-12 h-50">
+               <div class="col-xs-6 h-100"></div>
+               <div class="col-xs-6 h-100"></div>
+
+            </div>
+         </div>
+
+         <div class="col-xs-6 h-100">
+            <div class="col-xs-12 h-60"></div>
+            <div class="col-xs-12 h-40">
+               <div class="col-xs-4 h-100"></div>
+               <div class="col-xs-4 h-100"></div>
+               <div class="col-xs-4 h-100">
+                  <div class="h-50"></div>
+                  <div class="h-50"></div>
+               </div>
+            </div>
+         </div>
+
+
+
+      </div>
+
+
+   </div>
+
+   <!-- Una versión de jquery instalada local para trabajar offline -->
+   <script src="recursos/jquery-3.1.1.min.js" type="text/javascript"></script>
+
+   <script src="recursos/bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
+
+
+   <script>
+
+      var colores = ['red','yellow','blue','black'];
+
+      var ultima;
+      var prendidas = [];
+
+      setInterval(function(){
+
+         // indice calculado al azar
+         index = Math.floor( Math.random() * $('#cajas div').length );
+
+         // color elegido al azar desde arreglo
+         var color = colores[ Math.floor( Math.random() * colores.length ) ];
+
+         // checar si existe la última caja
+         if( typeof( ultima ) != "undefined" ) {
+
+            ultima.css({backgroundColor: 'white' })
+            ultima.removeClass('blur');
+
+         }
+
+         // seleccionar una caja con el indice random calculado arriba:
+         var caja = $('#cajas div').eq( index );
+
+         caja.css({ backgroundColor: color })
+         caja.addClass('blur');
+
+         prendidas.push( caja );
+
+         // si hay mas de 6 cajas prendidas, eliminar la primera
+         if( prendidas.length > 6 )
+            ultima = prendidas.shift();
+
+      }, 3000 );
+
+   </script>
+</body>
+</html>

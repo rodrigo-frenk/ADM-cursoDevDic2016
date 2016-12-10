@@ -1,0 +1,63 @@
+* { outline: 1px solid #def; }
+
+
+img { max-width: 100%;  }
+
+/* mala solucion temporal: */
+
+img { /*h100%*/ height: 100%; }
+
+
+
+/* LAYOUT GENERAL: */
+
+html, body {
+   height: 100%
+}
+
+
+/* CLASES UTILES: */
+
+
+.scroll-h {
+
+   overflow-y: auto;
+
+}
+
+/* establecer pesos tipográficos: */
+
+.font-xs {
+   font-size: 11px;
+}
+.font-s {
+   font-size: 12px;
+}
+.font-m {
+   font-size: 14px;
+}
+.font-lg {
+   font-size: 19px;
+}
+.font-xl {
+   font-size: 25px;
+}
+
+
+/* SLIDER EN PORTADA: */
+
+#imagen-portada article {
+   height: 50vh;
+}
+
+
+
+
+
+/* ENTRADAS EN INICIO */
+
+.entrada {
+   /*h350*/
+   height: 350px;
+
+}
