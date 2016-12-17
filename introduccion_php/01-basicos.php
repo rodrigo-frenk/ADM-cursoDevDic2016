@@ -8,7 +8,7 @@
 
 
 
-<!-- estilo interacalado de php -->
+<!-- estilo intercalado de php -->
 <h2>
 
   <?php echo "Subtitulo!"; ?>
@@ -75,6 +75,8 @@ $a = 18;
 
 if( $a > 17 ) {
   // hacer algo
+} else {
+  // hacemos otra cosa
 }
 
 $condicion = true;
@@ -83,7 +85,9 @@ $condicion = true;
 // nos ayuda con la orientación
 
 if( $condicion ) : //abrimos con dos puntos
-
+  // si sí...
+else:
+  // si no...
 endif; //cerramos con endif;
 
 
@@ -115,6 +119,7 @@ $nombrearreglo = [];
 $nombrearreglo[ 0 ] = "primer elemento";
 $nombrearreglo[ 1 ] = "segundo elemento";
 
+// insertar al final:
 array_push( $nombrearreglo, "elemento adicional" );
 array_push( $nombrearreglo, "otro elemento adicional" );
 
@@ -123,7 +128,7 @@ array_push( $nombrearreglo, "otro elemento adicional" );
 
 
 // BUCLES
-echo "<h4>enlistar elementos de arreglo:</h4>";
+echo "<h4>Enlistar elementos de arreglo:</h4>";
 
 for ($i=0; $i < count( $nombrearreglo ); $i++) {
   echo $nombrearreglo[ $i ] . '<br />';
@@ -133,7 +138,9 @@ for ($i=0; $i < count( $nombrearreglo ); $i++) :
   // hacer algo...
 endfor;
 
+echo '<h4>mas facil con foreach:</h4>';
 
+// manera abreviada de crear un bucle a partir de un arreglo
 foreach( $nombrearreglo as $elemento ) :
 
   echo $elemento;
@@ -148,5 +155,35 @@ while ($a <= 10) :
 endwhile;
 
 
+
+?>
+
+
+
+<h3>
+  Arreglos Asociativos:
+</h3>
+
+
+<?php
+
+$arreglo_asociativo = array(
+  "primer_indice"   => "primer_elemento",
+  "segundo_indice"  => "segundo_elemento",
+  "tercer_indice"   => "tercer_elemento",
+);
+
+foreach ($arreglo_asociativo as $indice => $valor) :
+  ?>
+
+  <div class="elemento-arreglo" style="padding:16px">
+
+    <?php echo $indice . ": " . $valor; ?>
+
+  </div>
+
+<?php
+
+endforeach;
 
 ?>

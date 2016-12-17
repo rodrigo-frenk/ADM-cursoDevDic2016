@@ -1,0 +1,35 @@
+/*
+Theme Name: Mi Nuevo Tema
+*/
+
+
+
+/* clases de alturas reutilizables */
+
+.h-1x {
+  height: 50px;
+}
+.h-2x {
+  height: 100px;
+}
+.h-3x {
+  height: 150px;
+}
+.h-4x {
+  height: 200px;
+}
+
+
+
+#cabecera {
+  height: 10vh;
+}
+
+#principal {
+  height: 85vh;
+  overflow-y: auto;
+}
+
+#pie-pagina {
+  height: 5vh;
+}
