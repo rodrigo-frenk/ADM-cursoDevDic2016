@@ -1,13 +1,22 @@
 <?php
 
+
+/* incluir mis otros archivos:*/
+
+include_once 'backend/new-post-type.php';
+
+
 /* ajustes de wp */
+
 
 
 add_theme_support( 'post-thumbnails' );
 
 show_admin_bar( false );
 
-/* cargar recursos */
+
+
+/* cargar recursos utilizando un HOOK (o gancho) */
 
 add_action( "wp_enqueue_scripts", "cargar_recursos" );
 
@@ -26,6 +35,7 @@ function cargar_recursos() {
   $themeDir . "/style.css" );
 
 
+
   wp_enqueue_script( "jquery" );
 
   wp_enqueue_script(
@@ -39,6 +49,7 @@ function cargar_recursos() {
     "imgLiquid",
     $themeDir . "/recursos/imgLiquid-master/js/imgLiquid-min.js"
   );
+
 
   wp_enqueue_script(
     "nuevo-tema",

@@ -1,42 +1,48 @@
-<?php
+<div class="container">
 
-// Abrimos un "Loop" de Wordpress:
+   <h1>Entradas Recientes</h1>
 
-if( have_posts() ) :
-  while( have_posts() ) :
-    the_post();
+   <?php
 
-    ?>
+   // Abrimos un "Loop" de Wordpress:
 
-    <!-- article#post_0.post.col-md-6 -->
-    <article id="post_0" class="post col-md-6">
+   if( have_posts() ) :
+     while( have_posts() ) :
+       the_post();
 
-      <section class="imagen imgLiquidFill h-3x">
-        <?php echo get_the_post_thumbnail(); ?>
-      </section>
+       ?>
 
-      <h4>
-        <?php echo get_the_title(); ?>
-      </h4>
+       <!-- article#post_0.post.col-md-6 -->
+       <article id="post_0" class="post col-md-6">
 
-      <small>
-        <?php echo get_the_date( 'd/F/Y', get_the_ID() ); ?>
-      </small>
-      <section class="contenido">
-        <?php echo get_the_content(); ?>
-      </section>
-    </article>
+         <section class="imagen imgLiquidFill h-3x">
+           <?php echo get_the_post_thumbnail(); ?>
+         </section>
+
+         <h4>
+           <?php echo get_the_title(); ?>
+         </h4>
+
+         <small>
+           <?php echo get_the_date( 'd/F/Y', get_the_ID() ); ?>
+         </small>
+
+         <section class="contenido">
+           <?php echo get_the_content(); ?>
+         </section>
+
+       </article>
 
 
 
-    <?php
+       <?php
 
 
-  endwhile;
-else:
+     endwhile;
 
-  echo "No hay posts."
+   endif;
 
-endif;
+   ?>
 
-?>
+
+</div>
