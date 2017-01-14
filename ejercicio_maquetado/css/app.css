@@ -111,3 +111,38 @@ body > section {
 * {
    color: white;
 }
+
+
+#reticula .container {
+   height: 100%;
+}
+
+
+#reticula .row {
+   height: 25%;
+}
+
+
+#reticula .row:nth-child(even) {
+   background-color: #999;
+}
+#reticula .row:nth-child(odd) {
+   background-color: #bbb;
+}
+
+
+#reticula .container .row:nth-child(1) * {
+   color: red;
+}
+
+#reticula .container .row:nth-child(2) * {
+   color: orange;
+}
+
+#reticula .container .row:nth-child(3) * {
+   color: yellow;
+}
+
+#reticula .container .row:nth-child(4) * {
+   color: purple;
+}
