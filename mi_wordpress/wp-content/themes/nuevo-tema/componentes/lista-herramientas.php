@@ -17,7 +17,7 @@
        <!-- article#post_0.post.col-md-6 -->
        <article id="post_0" class="post col-md-6">
 
-         <section class="imagen imgLiquidFill h-3x">
+         <section class="imagen imgLiquidNoFill h-3x">
            <?php echo get_the_post_thumbnail(); ?>
          </section>
 

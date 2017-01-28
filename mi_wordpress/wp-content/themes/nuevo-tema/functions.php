@@ -1,5 +1,10 @@
 <?php
 
+/*
+Este archivo sirve para configurar nuestro WP,
+o para asignar funciones nuevas a ejecutarse
+*/
+
 
 /* incluir mis otros archivos:*/
 
@@ -36,6 +41,7 @@ function cargar_recursos() {
 
 
 
+  // Wp ya trae jquery integrado, poreso podemos llamarlo así:
   wp_enqueue_script( "jquery" );
 
   wp_enqueue_script(

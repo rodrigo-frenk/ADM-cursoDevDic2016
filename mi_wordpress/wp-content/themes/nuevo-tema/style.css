@@ -2,25 +2,103 @@
 Theme Name: Mi Nuevo Tema
 */
 
+* {
+   outline: 1px solid #def;
+}
+
+/* RESET */
+
+body, html {
+   height: 100%;
+   padding: 0;
+   margin: 0;
+}
+
+
+ul {
+   margin: 0;
+   padding: 0;
+}
+
+li {
+   list-style: none;
+}
+
+
+
+
+/* Utilidades */
+
+.w-100 {
+   width: 100%;
+}
+.h-100 {
+   height: 100%;
+}
+
+
+.relative {
+   position: relative;
+}
+
+.absolute {
+   position: absolute;
+}
+
+.up-l {
+   top: 0;
+   left: 0;
+}
 
 
 /* clases de alturas reutilizables */
 
 .h-1x {
-  height: 50px;
+  height: 48px;
 }
 .h-2x {
-  height: 100px;
+  height: 96px;
 }
 .h-3x {
-  height: 150px;
+  height: 144px;
 }
 .h-4x {
-  height: 200px;
+  height: 192px;
 }
 
 
 
+#principal {
+   height: calc(100vh - 100px);
+   overflow-y: auto;
+}
+
+
+#menu li {
+
+   font-size: 16px;
+
+   padding: 0.75em;
+
+   line-height: 1.5em !important;
+
+}
+
+#menu li:hover,
+#menu li:focus {
+   background-color: #0bc1ed;
+}
+
+#menu li:active,
+#menu li:visited {
+   background-color: #0bd1ff;
+}
+
+
+
+
+
+/*
 #cabecera {
   height: 10vh;
 }
@@ -33,3 +111,71 @@ Theme Name: Mi Nuevo Tema
 #pie-pagina {
   height: 5vh;
 }
+*/
+
+
+
+/*.add_to_cart_button {
+   padding: 30px;
+   background-color: green;
+}
+*/
+
+#categorias li {
+   padding: 32px;
+}
+
+#categorias li {
+   height: 20%;
+}
+
+#categorias li:nth-child(1) {
+background-color: #1282A7;
+}
+
+#categorias li:nth-child(2) {
+background-color: #57A9C4;
+}
+
+#categorias li:nth-child(3) {
+background-color: #3392B1;
+}
+
+#categorias li:nth-child(4) {
+background-color: #056788;
+}
+
+#categorias li:nth-child(5) {
+background-color: #03516B;
+}
+
+
+/* COLORES */
+
+
+.color-black {
+   color: #000;
+}
+
+.color-white {
+   color: #fff;
+}
+
+.color-black-bg {
+   background-color: #000;
+}
+
+.color-white-bg {
+   background-color: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+/**/
