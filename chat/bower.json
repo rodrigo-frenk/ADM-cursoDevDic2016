@@ -1,0 +1,21 @@
+{
+  "name": "introduccion_nodejs",
+  "description": "",
+  "main": "hello.js",
+  "authors": [
+    "rodrigo-frenk <rodrigo.frenk@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/rodrigo-frenk/ADM-cursoDevDic2016",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "imgLiquid": "^0.9.944"
+  }
+}

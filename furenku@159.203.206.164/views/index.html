@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>
+      Introducción a NodeJS
+   </title>
+
+   <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+   <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+
+   <style>
+
+   * {
+      outline: 1px solid #def;
+   }
+
+   /* RESETS: */
+
+   ul, li {
+      margin: 0;
+      padding: 0;
+   }
+
+   li {
+      list-style: none;
+   }
+
+
+   .box {
+      background-color: #eee;
+      padding: 16px;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+   }
+
+   .h-100 {
+      height: 100%;
+   }
+
+
+   #main-header {
+      height: 96px;
+   }
+
+   #user-actions {
+      height: 64px;
+   }
+
+   #main-container {
+      height: calc( 100vh - 160px );
+   }
+
+
+   #main-container {
+      /*ovya*/
+      overflow-y: auto;
+   }
+
+
+   /* COLORES */
+
+   #main-container {
+      background-color: #bbb;
+   }
+   #main-container li {
+      background-color: #bbb;
+   }
+
+   #messages .chat-message:nth-child(even) {
+      background-color: #eee;
+   }
+   #messages .chat-message:nth-child(odd) {
+      background-color: #ddd;
+   }
+
+   input {
+      padding: 8px;
+      font-size: 12px;
+      height: 32px;
+      border-radius: 0;
+      border:none;
+   }
+
+   input[type=submit] {
+      background-color: #333;
+      color: white;
+   }
+
+   #main-header, #main-container, #user-actions {
+      display: none;
+   }
+
+
+   #welcome-screen form {
+      height: 40vh;
+      margin: 30vh 0;
+   }
+
+   .new-user {
+      font-size: 11px;
+      color: #75ca00;
+   }
+   .user-gone {
+      font-size: 11px;
+      color: #bbb;
+   }
+
+   .chat-message {}
+
+   .chat-message .username {
+      color: #aaa;
+      font-weight: bold;
+      margin-right: 8px;
+   }
+   .chat-message .message {
+      color: #222
+   }
+
+   </style>
+
+</head>
+<body>
+
+   <!-- section#welcome-screen.container-fluid-h-100 -->
+   <section id="welcome-screen" class="container-fluid h-100">
+
+      <form action="" class="box text-center">
+
+         <h1>
+            Bienvenid@
+         </h1>
+
+         <p>
+            Introduce tu nombre de usuario
+         </p>
+
+         <input
+         id="username"
+         type="text"
+         name="username"
+         placeholder="Nombre de usuario">
+
+         <input
+         type="submit"
+         value="Enviar">
+
+      </form>
+
+   </section>
+
+   <header id="main-header" class="box container-fluid">
+      <h2>
+         Chat
+      </h2>
+   </header>
+
+   <!-- main#main-container.box.container-fluid -->
+   <main id="main-container" class="box container-fluid">
+      <ul id="messages" class="h-100">
+
+      </ul>
+   </main>
+
+   <footer id="user-actions" class="box container-fluid">
+      <form action="">
+         <!-- input.col-xs-9.col-md-10.col-lg-11[type=text][name=message] -->
+         <input
+         id="message"
+         type="text"
+         class="col-xs-9 col-md-10 col-lg-11"
+         name="message"
+         placeholder="Escribe tu mensaje"
+         >
+
+         <input
+         type="submit"
+         class="col-xs-3 col-md-2 col-lg-1"
+         value="Enviar">
+
+      </form>
+   </footer>
+
+
+   <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+   <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+   <script src="/socket.io/socket.io.js"></script>
+
+   <script>
+   var socket = io()
+
+   var username = ""
+
+   $('#welcome-screen form').submit(function(){
+
+
+      var new_username = $('#username').val()
+
+      if( new_username != "" ) {
+
+         // almacenarlo en una variable global para uso futuro
+         username = new_username
+
+
+         socket.emit('set username', username)
+
+
+         // ocultar pantalla de bienvenida
+         $('#welcome-screen').animate({
+
+            opacity: 0
+
+         }, 1000, function(){
+
+            $('#welcome-screen').css({
+               display: 'none'
+            })
+
+            var elementsToShow = $('#main-header, #main-container, #user-actions')
+
+            // hacer transparentes para que al mostrarlos no se vean de golpe
+            elementsToShow.css({
+               opacity:0,
+               display: 'block'
+            })
+
+            elementsToShow.animate({
+               opacity: 1
+            }, 1000)
+
+
+         })
+
+         // mostrar componentes ocultos
+
+      }
+
+      return false
+
+   });
+
+   $('#user-actions form').submit(function(){
+
+      // leer valor de input en una variable
+      var message = $('#message').val();
+
+      socket.emit('chat message', message )
+
+      // vaciar valor de input
+      $('#message').val('')
+
+      return false
+
+   });
+
+
+   socket.on('chat message', function( object ){
+
+      newText = '<a href="/user" class="username" target="_blank">' + object.username + ':</a>'
+      newText += '<span class="message">' + object.message + '</span>'
+
+      showNewMessage( newText, 'chat-message' );
+
+   })
+
+
+   socket.on('new user', function(msg){
+
+      showNewMessage( msg, 'new-user' );
+
+   })
+
+   socket.on('user gone', function(msg){
+
+      showNewMessage( msg, 'user-gone' );
+
+   })
+
+   function showNewMessage( msg, classes ) {
+
+      // crear nuevo elemento html
+      newLi = $('<li>')
+      // añadir clase "box"
+      .addClass('box')
+      .addClass( classes )
+      // introducir mensaje como contenido:
+      .html(msg)
+
+      // añadimos el nuevo Li al final de la UL
+      $('#messages').append(newLi)
+
+   }
+   </script>
+
+
+</body>
+</html>
