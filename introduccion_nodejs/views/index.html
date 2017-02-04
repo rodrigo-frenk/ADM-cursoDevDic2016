@@ -11,115 +11,7 @@
    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
 
-   <style>
-
-   * {
-      outline: 1px solid #def;
-   }
-
-   /* RESETS: */
-
-   ul, li {
-      margin: 0;
-      padding: 0;
-   }
-
-   li {
-      list-style: none;
-   }
-
-
-   .box {
-      background-color: #eee;
-      padding: 16px;
-      -webkit-box-sizing: border-box;
-      box-sizing: border-box;
-   }
-
-   .h-100 {
-      height: 100%;
-   }
-
-
-   #main-header {
-      height: 96px;
-   }
-
-   #user-actions {
-      height: 64px;
-   }
-
-   #main-container {
-      height: calc( 100vh - 160px );
-   }
-
-
-   #main-container {
-      /*ovya*/
-      overflow-y: auto;
-   }
-
-
-   /* COLORES */
-
-   #main-container {
-      background-color: #bbb;
-   }
-   #main-container li {
-      background-color: #bbb;
-   }
-
-   #messages .chat-message:nth-child(even) {
-      background-color: #eee;
-   }
-   #messages .chat-message:nth-child(odd) {
-      background-color: #ddd;
-   }
-
-   input {
-      padding: 8px;
-      font-size: 12px;
-      height: 32px;
-      border-radius: 0;
-      border:none;
-   }
-
-   input[type=submit] {
-      background-color: #333;
-      color: white;
-   }
-
-   #main-header, #main-container, #user-actions {
-      display: none;
-   }
-
-
-   #welcome-screen form {
-      height: 40vh;
-      margin: 30vh 0;
-   }
-
-   .new-user {
-      font-size: 11px;
-      color: #75ca00;
-   }
-   .user-gone {
-      font-size: 11px;
-      color: #bbb;
-   }
-
-   .chat-message {}
-
-   .chat-message .username {
-      color: #aaa;
-      font-weight: bold;
-      margin-right: 8px;
-   }
-   .chat-message .message {
-      color: #222
-   }
-
-   </style>
+   <link rel="stylesheet" href="/assets/stylesheets/chat.css">
 
 </head>
 <body>
@@ -152,14 +44,18 @@
    </section>
 
    <header id="main-header" class="box container-fluid">
-      <h2>
-         Chat
-      </h2>
+      <button id="boton-chat-grupal" class="btn btn-secondary">
+         Chat Grupal
+      </button>
    </header>
 
    <!-- main#main-container.box.container-fluid -->
    <main id="main-container" class="box container-fluid">
-      <ul id="messages" class="h-100">
+      <ul id="users" class="col-md-3 h-xs-30 h-md-100 scroll-y">
+
+      </ul>
+
+      <ul id="messages" class="col-md-9 h-xs-70 h-md-100 scroll-y">
 
       </ul>
    </main>
@@ -193,6 +89,17 @@
    var socket = io()
 
    var username = ""
+
+   messages = {}
+
+   messages.group = {
+      list: [],
+      unread: 0
+   }
+
+   var userList = []
+
+   var currentChat = 'group'
 
    $('#welcome-screen form').submit(function(){
 
@@ -247,7 +154,16 @@
       // leer valor de input en una variable
       var message = $('#message').val();
 
-      socket.emit('chat message', message )
+      if( currentChat == 'group' ) {
+         socket.emit('chat message', message )
+      }
+      else {
+         socket.emit('private message', {
+            target_id: currentChat,
+            message: message
+         })
+      }
+
 
       // vaciar valor de input
       $('#message').val('')
@@ -259,25 +175,175 @@
 
    socket.on('chat message', function( object ){
 
-      newText = '<a href="/user" class="username" target="_blank">' + object.username + ':</a>'
-      newText += '<span class="message">' + object.message + '</span>'
+      messages.group.list.push( object )
 
-      showNewMessage( newText, 'chat-message' );
+      if( currentChat == 'group') {
+         showMessages( messages.group.list )
+      }
+
+   })
+
+   socket.on('private message', function( object ){
+console.log( "PM!", object )
+      sourceUser = object.source_id
+      if( typeof( messages[sourceUser] ) === "undefined" ) {
+         messages[sourceUser] = {
+            list: [],
+            unread: 0
+         }
+      }
+
+      messages[sourceUser].list.push( object )
+      messages[sourceUser].unread++
+
+      if( currentChat === object.source_id ) {
+         showMessages( messages[ sourceUser ].list )
+         messages[ sourceUser ].unread=0
+      }
+
+      updateUnreadNumber( sourceUser )
 
    })
 
 
    socket.on('new user', function(msg){
 
-      showNewMessage( msg, 'new-user' );
+      showNewMessage( msg.message, 'new-user' );
+
+      userList = msg.data
+
+      showActiveUsers( msg.data )
 
    })
 
    socket.on('user gone', function(msg){
 
-      showNewMessage( msg, 'user-gone' );
+      showNewMessage( msg.message, 'user-gone' );
+
+      showActiveUsers( msg.data )
 
    })
+
+
+
+   function updateUnreadNumber( userId ) {
+      if(messages[userId].unread == 0 ) {
+         html = ''
+      } else {
+         html = messages[userId].unread
+      }
+      $('#users li[data-id='+userId+'] .number').html( html )
+
+   }
+   // funciones para UI:
+   function setupUserButtons() {
+      // deshabilitar click para no duplicar funciones
+      $('#users li').unbind('click')
+      // configurar click para todos los lis
+      $('#users li').click(function(){
+
+         userId = $(this).data('id')
+
+         selectUser( userId )
+
+      })
+   }
+
+
+   $('#boton-chat-grupal').click(function(){
+
+
+      loadGroupChat()
+
+   })
+
+
+   function selectUser( userId ) {
+
+      loadConversation( userId )
+
+      messages[ userId ].unread = 0
+
+      updateUnreadNumber( userId )
+
+   }
+
+   function loadGroupChat() {
+
+      clearMessages()
+
+      currentChat = 'group'
+
+      messages.group.unread = 0
+
+      showMessages( messages.group.list )
+
+   }
+
+   function loadConversation( userId ) {
+
+      clearMessages()
+
+      currentChat = userId
+
+      showMessages( messages[userId].list )
+
+      console.log( "cargar conversacion con: ", userId )
+
+   }
+
+   function clearMessages() {
+      $('#messages').html('')
+   }
+
+   function showMessages( messages ) {
+
+      clearMessages()
+      for( i in messages ) {
+
+         newText = formatMessage( messages[i] )
+
+         showNewMessage( newText, 'chat-message' );
+
+      }
+
+   }
+
+
+
+   function formatMessage( object ) {
+
+      formattedMessage = '<a href="/user" class="username" target="_blank">'
+      formattedMessage += object.username + ':'
+      formattedMessage += '</a>'
+
+      formattedMessage += '<span class="message">'
+      formattedMessage += object.message
+      formattedMessage += '</span>'
+
+      return formattedMessage
+
+   }
+
+
+   function showActiveUsers( users ) {
+      $('#users').html('');
+      for( i in users ) {
+         //crear nuevo elemento li con jquery
+         nuevoElemento = $('<li>');
+
+         nuevoElemento.append($('<span>').addClass('username').html(users[i].username))
+         nuevoElemento.append($('<span>').addClass('number').html(''))
+
+         nuevoElemento.attr('data-id', users[i].id )
+
+         //añadir nuevo elemento li con jquery
+         $('#users').append( nuevoElemento )
+      }
+
+      setupUserButtons()
+
+   }
 
    function showNewMessage( msg, classes ) {
 
@@ -293,6 +359,9 @@
       $('#messages').append(newLi)
 
    }
+
+
+
    </script>
 
 
