@@ -86,6 +86,8 @@
    <script src="/socket.io/socket.io.js"></script>
 
    <script>
+
+   // Variables y recursos importados:
    var socket = io()
 
    var username = ""
@@ -100,6 +102,12 @@
    var userList = []
 
    var currentChat = 'group'
+
+
+
+
+   // Interacciones de Usuario
+
 
    $('#welcome-screen form').submit(function(){
 
@@ -173,6 +181,32 @@
    });
 
 
+
+
+   $('#boton-chat-grupal').click(function(){
+
+      loadGroupChat()
+
+   })
+
+
+   function setupUserButtons() {
+      // deshabilitar click para no duplicar funciones
+      $('#users li').unbind('click')
+      // configurar click para todos los lis
+      $('#users li').click(function(){
+
+         userId = $(this).data('id')
+
+         selectUser( userId )
+
+      })
+   }
+
+
+
+   // Escuchando mensajes de Socket.io
+
    socket.on('chat message', function( object ){
 
       messages.group.list.push( object )
@@ -183,8 +217,21 @@
 
    })
 
+
+
+   socket.on('new user', function(msg){
+
+      showNewMessage( msg.message, 'new-user' );
+
+      userList = msg.data
+
+      showActiveUsers( msg.data )
+
+   })
+
+
    socket.on('private message', function( object ){
-console.log( "PM!", object )
+      console.log( "PM!", object )
       sourceUser = object.source_id
       if( typeof( messages[sourceUser] ) === "undefined" ) {
          messages[sourceUser] = {
@@ -206,16 +253,6 @@ console.log( "PM!", object )
    })
 
 
-   socket.on('new user', function(msg){
-
-      showNewMessage( msg.message, 'new-user' );
-
-      userList = msg.data
-
-      showActiveUsers( msg.data )
-
-   })
-
    socket.on('user gone', function(msg){
 
       showNewMessage( msg.message, 'user-gone' );
@@ -226,87 +263,12 @@ console.log( "PM!", object )
 
 
 
-   function updateUnreadNumber( userId ) {
-      if(messages[userId].unread == 0 ) {
-         html = ''
-      } else {
-         html = messages[userId].unread
-      }
-      $('#users li[data-id='+userId+'] .number').html( html )
 
-   }
-   // funciones para UI:
-   function setupUserButtons() {
-      // deshabilitar click para no duplicar funciones
-      $('#users li').unbind('click')
-      // configurar click para todos los lis
-      $('#users li').click(function(){
+   /******************* Funciones de  lógica y visualización: **************/
 
-         userId = $(this).data('id')
-
-         selectUser( userId )
-
-      })
-   }
-
-
-   $('#boton-chat-grupal').click(function(){
-
-
-      loadGroupChat()
-
-   })
-
-
-   function selectUser( userId ) {
-
-      loadConversation( userId )
-
-      messages[ userId ].unread = 0
-
-      updateUnreadNumber( userId )
-
-   }
-
-   function loadGroupChat() {
-
-      clearMessages()
-
-      currentChat = 'group'
-
-      messages.group.unread = 0
-
-      showMessages( messages.group.list )
-
-   }
-
-   function loadConversation( userId ) {
-
-      clearMessages()
-
-      currentChat = userId
-
-      showMessages( messages[userId].list )
-
-      console.log( "cargar conversacion con: ", userId )
-
-   }
 
    function clearMessages() {
       $('#messages').html('')
-   }
-
-   function showMessages( messages ) {
-
-      clearMessages()
-      for( i in messages ) {
-
-         newText = formatMessage( messages[i] )
-
-         showNewMessage( newText, 'chat-message' );
-
-      }
-
    }
 
 
@@ -324,6 +286,44 @@ console.log( "PM!", object )
       return formattedMessage
 
    }
+
+
+
+   function loadConversation( userId ) {
+
+      clearMessages()
+
+      currentChat = userId
+
+      showMessages( messages[userId].list )
+
+      console.log( "cargar conversacion con: ", userId )
+
+   }
+
+
+   function loadGroupChat() {
+
+      clearMessages()
+
+      currentChat = 'group'
+
+      messages.group.unread = 0
+
+      showMessages( messages.group.list )
+   }
+
+
+   function selectUser( userId ) {
+
+      loadConversation( userId )
+
+      messages[ userId ].unread = 0
+
+      updateUnreadNumber( userId )
+
+   }
+
 
 
    function showActiveUsers( users ) {
@@ -357,6 +357,30 @@ console.log( "PM!", object )
 
       // añadimos el nuevo Li al final de la UL
       $('#messages').append(newLi)
+
+   }
+
+
+   function showMessages( messages ) {
+
+      clearMessages()
+      for( i in messages ) {
+
+         newText = formatMessage( messages[i] )
+
+         showNewMessage( newText, 'chat-message' );
+
+      }
+
+   }
+
+   function updateUnreadNumber( userId ) {
+      if(messages[userId].unread == 0 ) {
+         html = ''
+      } else {
+         html = messages[userId].unread
+      }
+      $('#users li[data-id='+userId+'] .number').html( html )
 
    }
 
