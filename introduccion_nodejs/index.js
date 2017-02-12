@@ -8,7 +8,7 @@ var io = require('socket.io')(http)
 // un Objeto para almacenar los usuarios:
 var users = {}
 
-// línea necesaria para poder servir recursos desde nuestro HTML:
+// configurar algunos directorios para facilitar acceso en toda la app
 app.use('/bower_components', express.static('bower_components') )
 // app.use('/socket.io', express.static('socket.io') )
 app.use('/assets', express.static('public/assets') )
@@ -20,8 +20,6 @@ app.get('/', function (req, res) {
 
 app.get('/user', function (req, res) {
    res.send('Ver usuario');
-   // res.sendFile( __dirname + '/views/index.html' )
-
 });
 
 
@@ -47,12 +45,15 @@ io.on('connection', function(socket){
 
       delete users[socket.id]
 
-      var userData = getUsersData()
+      var userData = getUsers()
 
       io.emit('user gone', {
          message: displayMessage,
          data: userData
       });
+
+      // notificar numéro de usuarios restantes
+      // contando los índices en el Obj. de 'users'
 
       console.log(
          "todavía quedan "
@@ -76,7 +77,7 @@ io.on('connection', function(socket){
 
 
    socket.on('private message', function(data){
-console.log( "got PM:", data );
+
       sourceUser = socket.id
       targetUser = users[data.target_id]
       // .emit('hello')
@@ -98,7 +99,7 @@ console.log( "got PM:", data );
 
       users[ socket.id ].username = msg;
 
-      var userData = getUsersData()
+      var userData = getUsers()
 
       displayMessage = users[ socket.id ].username + " acaba de entrar."
 
@@ -114,7 +115,7 @@ console.log( "got PM:", data );
 });
 
 
-function getUsersData() {
+function getUsers() {
 
    usersArray = []
 

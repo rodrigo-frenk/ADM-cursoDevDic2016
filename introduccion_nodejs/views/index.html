@@ -16,6 +16,7 @@
 </head>
 <body>
 
+
    <!-- section#welcome-screen.container-fluid-h-100 -->
    <section id="welcome-screen" class="container-fluid h-100">
 
@@ -44,9 +45,13 @@
    </section>
 
    <header id="main-header" class="box container-fluid">
-      <button id="boton-chat-grupal" class="btn btn-secondary">
+      <button id="boton-chat-grupal" class="btn btn-secondary col-xs-6 col-md-3 col-lg-2">
          Chat Grupal
       </button>
+
+      <div id="header-username" class="col-xs-6 col-md-3 col-lg-2 col-md-offset-6 col-lg-offset-8 text-right">
+         username
+      </div>
    </header>
 
    <!-- main#main-container.box.container-fluid -->
@@ -87,8 +92,12 @@
 
    <script>
 
+
    // Variables y recursos importados:
    var socket = io()
+
+
+
 
    var username = ""
 
@@ -105,7 +114,6 @@
 
 
 
-
    // Interacciones de Usuario
 
 
@@ -119,15 +127,15 @@
          // almacenarlo en una variable global para uso futuro
          username = new_username
 
-
+         // notificar al servidor de cambio de nombr ede usuario
          socket.emit('set username', username)
+
+         $('#header-username').html( username )
 
 
          // ocultar pantalla de bienvenida
          $('#welcome-screen').animate({
-
             opacity: 0
-
          }, 1000, function(){
 
             $('#welcome-screen').css({
@@ -157,19 +165,39 @@
 
    });
 
-   $('#user-actions form').submit(function(){
+   $('#user-actions form').submit(function(e){
+
+      // e.preventDefault()
 
       // leer valor de input en una variable
       var message = $('#message').val();
 
+      // mandar mensaje dependiendo si el chat actual es grupal, o privado
       if( currentChat == 'group' ) {
          socket.emit('chat message', message )
       }
       else {
+
+
          socket.emit('private message', {
             target_id: currentChat,
             message: message
          })
+
+         if( typeof( messages[currentChat] ) === "undefined" ) {
+            messages[currentChat] = {
+               list: [],
+               unread: 0
+            }
+         }
+
+         messages[currentChat].list.push({
+            username: username,
+            message: message
+         })
+
+         showMessages( messages[currentChat].list )
+
       }
 
 
@@ -189,14 +217,23 @@
 
    })
 
+   // Preparar botones para abrir chat privado:
 
    function setupUserButtons() {
+
       // deshabilitar click para no duplicar funciones
       $('#users li').unbind('click')
+
       // configurar click para todos los lis
       $('#users li').click(function(){
 
          userId = $(this).data('id')
+
+         // $('#users li').attr('selected',false)
+
+         $(this).attr('selected',true)
+         // quitar atributo a li's hermanos
+         .siblings().attr('selected',false)
 
          selectUser( userId )
 
@@ -209,6 +246,7 @@
 
    socket.on('chat message', function( object ){
 
+      // almacenar nuevo mensaje en lista grupal
       messages.group.list.push( object )
 
       if( currentChat == 'group') {
@@ -223,6 +261,7 @@
 
       showNewMessage( msg.message, 'new-user' );
 
+      // El servidor entrega una lista de TODOS los usuarios conectado
       userList = msg.data
 
       showActiveUsers( msg.data )
@@ -231,18 +270,29 @@
 
 
    socket.on('private message', function( object ){
-      console.log( "PM!", object )
+
       sourceUser = object.source_id
+
+      // verificar si existe conversación con el usuario
+
       if( typeof( messages[sourceUser] ) === "undefined" ) {
+
+         // si no, crearla
+
          messages[sourceUser] = {
             list: [],
             unread: 0
          }
-      }
 
+      }
+      // almacenar nuevo mensaje
       messages[sourceUser].list.push( object )
+
+      // aumentar cuenta de msjs sin leer
       messages[sourceUser].unread++
 
+      // si tenemos abierta la conversación con el usuario,
+      // mostrar los mensajes en la pantalla
       if( currentChat === object.source_id ) {
          showMessages( messages[ sourceUser ].list )
          messages[ sourceUser ].unread=0
@@ -304,13 +354,12 @@
 
    function loadGroupChat() {
 
-      clearMessages()
-
       currentChat = 'group'
 
       messages.group.unread = 0
 
       showMessages( messages.group.list )
+
    }
 
 
@@ -322,23 +371,38 @@
 
       updateUnreadNumber( userId )
 
+
+      // tomar el li del usuario seleccionado, activarlo
+
+
    }
 
 
 
    function showActiveUsers( users ) {
+
+      // vaciar espacio para llenar con usuarios:
       $('#users').html('');
+
       for( i in users ) {
          //crear nuevo elemento li con jquery
-         nuevoElemento = $('<li>');
+         newElement = $('<li>')
 
-         nuevoElemento.append($('<span>').addClass('username').html(users[i].username))
-         nuevoElemento.append($('<span>').addClass('number').html(''))
+         userSpan = $('<span>').addClass('username').html( users[i].username )
+         numberSpan = $('<span>').addClass('number').html('')
 
-         nuevoElemento.attr('data-id', users[i].id )
+         newElement.append( userSpan )
+         newElement.append( numberSpan )
 
-         //añadir nuevo elemento li con jquery
-         $('#users').append( nuevoElemento )
+         // almacenar ID de usuario en un atributo dentro del li
+         newElement.attr('data-id', users[i].id )
+
+         // si no somos nosotros,
+         if( socket.id !== users[i].id ) {             
+            //añadir nuevo elemento li con jquery
+            $('#users').append( newElement )
+         }
+
       }
 
       setupUserButtons()
@@ -347,7 +411,7 @@
 
    function showNewMessage( msg, classes ) {
 
-      // crear nuevo elemento html
+      // crear nuevo elemento html: li
       newLi = $('<li>')
       // añadir clase "box"
       .addClass('box')
@@ -364,6 +428,7 @@
    function showMessages( messages ) {
 
       clearMessages()
+
       for( i in messages ) {
 
          newText = formatMessage( messages[i] )

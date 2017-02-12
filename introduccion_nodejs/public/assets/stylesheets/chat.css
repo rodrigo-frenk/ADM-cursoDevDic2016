@@ -135,3 +135,8 @@
       color: red;
       font-weight: bold;
    }
+
+   #users li[selected] {
+      background-color: #333;
+      color: #fff;
+   }
